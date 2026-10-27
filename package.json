@@ -1,0 +1,8 @@
+{
+  "name": "astoy-pro",
+  "version": "1.0.0",
+  "description": "Astoy-pro - اتصال 3 اشخاص مثل واتساب",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": { "express": "^4.18.2", "socket.io": "^4.7.5" }
+}
