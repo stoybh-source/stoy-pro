@@ -1,0 +1,21 @@
+# Render Blueprint: HTTPS تلقائي + قرص دائم لحفظ الرسائل
+# ملاحظة: القرص الدائم يحتاج خطة مدفوعة (starter). للتجربة المجانية احذف قسم disk وغيّر plan إلى free.
+services:
+  - type: web
+    name: stoy
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: ROOM_PASSWORD
+        sync: false
+      - key: TURN_URL
+        sync: false
+      - key: TURN_USER
+        sync: false
+      - key: TURN_PASS
+        sync: false
+    disk:
+      name: stoy-data
+      mountPath: /data
+      sizeGB: 1

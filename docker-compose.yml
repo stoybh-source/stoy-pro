@@ -1,0 +1,26 @@
+# استضافة ذاتية كاملة: Stoy + HTTPS تلقائي (Caddy) + خادم TURN (coturn)
+# الاستخدام: cp .env.example .env  ثم عدّل القيم  ثم  docker compose up -d
+services:
+  stoy:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes: [stoy-data:/data]
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    env_file: .env
+    ports: ["80:80", "443:443"]
+    volumes: ["./Caddyfile:/etc/caddy/Caddyfile:ro", "caddy-data:/data"]
+    depends_on: [stoy]
+  coturn:
+    image: coturn/coturn:latest
+    restart: unless-stopped
+    network_mode: host
+    command: >
+      -n --realm=${DOMAIN} --external-ip=${PUBLIC_IP}
+      --lt-cred-mech --user=${TURN_USER}:${TURN_PASS}
+      --fingerprint --no-cli --min-port=49160 --max-port=49200
+volumes:
+  stoy-data:
+  caddy-data:
